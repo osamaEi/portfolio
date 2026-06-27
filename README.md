@@ -1,59 +1,168 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Osama Eid Bakry — Portfolio
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A dark/light, database-driven developer portfolio built with **Laravel 12**. Projects, skills, experience, testimonials, and contact messages are all managed through a built-in admin dashboard.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- 🎨 Dark / light theme switcher (persists per visitor)
+- 🖼️ Projects carousel with cover images and case-study pages
+- ⭐ Client testimonials (from Mostaql reviews)
+- 🧩 Skills, experience timeline, and an "about" section
+- 📬 Working contact form (stored in DB + optional email notification)
+- 🔐 Admin panel with CRUD for projects, skills, experience, testimonials, and a message inbox
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tech stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| | |
+|---|---|
+| Framework | Laravel 12 (PHP 8.2+) |
+| Database | MySQL |
+| Frontend | Blade + vanilla CSS/JS (no build step required) |
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Requirements
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- PHP **8.2+**
+- Composer **2.x**
+- MySQL **5.7+ / 8.x**
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Installation
 
-### Premium Partners
+```bash
+# 1. Clone the repository
+git clone <your-repo-url> portfolio
+cd portfolio
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+# 2. Install PHP dependencies
+composer install
 
-## Contributing
+# 3. Create your environment file
+cp .env.example .env        # Windows: copy .env.example .env
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# 4. Generate the application key
+php artisan key:generate
+```
 
-## Code of Conduct
+### Configure the database
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Create the database, then edit the `DB_*` values in `.env`:
 
-## Security Vulnerabilities
+```sql
+CREATE DATABASE portfolio_osama CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```dotenv
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=portfolio_osama
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## License
+### Link storage (for uploaded images)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan storage:link
+```
+
+---
+
+## Migrate & seed
+
+Run the migrations to create all tables, then seed the portfolio content (projects, skills, experience, testimonials, and an admin user):
+
+```bash
+# Run migrations
+php artisan migrate
+
+# Seed the database with portfolio data
+php artisan db:seed
+```
+
+Or do both at once (drops all tables first — **this destroys existing data**):
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+> To re-run only the portfolio seeder without wiping data:
+> ```bash
+> php artisan db:seed --class=PortfolioSeeder
+> ```
+> The seeder uses `updateOrCreate`, so it's safe to run repeatedly.
+
+### What gets seeded
+
+| Table | Contents |
+|---|---|
+| `users` | One admin account (see credentials below) |
+| `projects` | 8 portfolio projects |
+| `skills` | Skill set grouped by category |
+| `experiences` | Professional experience entries |
+| `testimonials` | 8 five-star client reviews |
+
+---
+
+## Run the app
+
+```bash
+php artisan serve
+```
+
+Then open:
+
+- **Public site:** http://127.0.0.1:8000
+- **Admin login:** http://127.0.0.1:8000/admin/login
+
+### Default admin credentials
+
+```
+Email:    osamaeidbm1993@gmail.com
+Password: password
+```
+
+> ⚠️ **Change this password immediately** in production. Update it in
+> `database/seeders/PortfolioSeeder.php`, or after logging in.
+
+---
+
+## Managing content
+
+Log in to `/admin` to:
+
+- Create / edit / delete **projects** (with cover-image upload)
+- Manage **skills**, **experience**, and **testimonials**
+- Read and delete **contact messages**
+
+Project cover images are stored in `public/projects/`.
+
+---
+
+## Email (contact form notifications)
+
+By default `MAIL_MAILER=log`, so submissions are saved to the database and the
+notification email is written to `storage/logs/laravel.log`. To send real emails,
+configure your SMTP / Mailgun credentials in `.env`:
+
+```dotenv
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.mailgun.org
+MAIL_PORT=587
+MAIL_USERNAME=your-username
+MAIL_PASSWORD=your-password
+MAIL_FROM_ADDRESS="hello@yourdomain.com"
+
+PORTFOLIO_EMAIL=osamaeidbm1993@gmail.com
+```
+
+---
+
+## Customization
+
+- **Name, role, socials, stats:** `config/portfolio.php`
+- **Styles:** `public/css/portfolio.css` (public) · `public/css/admin.css` (admin)
+- **Scripts:** `public/js/portfolio.js`
