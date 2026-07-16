@@ -2,7 +2,7 @@
 
 @section('content')
 {{-- ===================== HERO ===================== --}}
-<header class="relative min-h-screen flex items-center overflow-hidden bg-gray-[#0a0a1f] text-slate-900 dark:text-white">
+<header class="relative min-h-screen flex items-center overflow-hidden bg-slate-900 text-slate-900 dark:text-white">
 
     {{-- Background Image with Overlay --}}
     <div class="absolute inset-0">
