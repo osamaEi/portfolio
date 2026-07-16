@@ -39,7 +39,7 @@
                 </h1>
 
                 <p class="max-w-lg text-lg leading-relaxed text-gray-200">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    I build modern, responsive, and user-focused web experiences with clean code and attention to detail, helping businesses bring their ideas to life online.
                 </p>
 
                 <div class="flex flex-wrap gap-4">
@@ -60,7 +60,7 @@
                 <div>
                     <h3 class="uppercase text-sm tracking-[2px] text-gray-400 mb-3">ABOUT ME</h3>
                     <p class="text-gray-300 leading-relaxed text-[17px]">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        Passionate about creating fast, accessible, and visually engaging websites. I enjoy turning complex problems into simple, elegant digital solutions.
                     </p>
                     <a href="#about" class="inline-block mt-4 text-cyan-400 hover:text-cyan-300 text-sm font-medium">
                         LEARN MORE →
@@ -70,7 +70,7 @@
                 <div>
                     <h3 class="uppercase text-sm tracking-[2px] text-gray-400 mb-3">MY WORK</h3>
                     <p class="text-gray-300 leading-relaxed text-[17px]">
-                        Purus at faucibus pulvinar elementum integer enim neque fermentum iaculis non diam pharetra dolor consequat.
+                        From landing pages to full web applications, my projects focus on performance, usability, and delivering meaningful experiences for users.
                     </p>
                     <a href="#projects" class="inline-block mt-4 text-cyan-400 hover:text-cyan-300 text-sm font-medium">
                         BROWSE PORTFOLIO →
