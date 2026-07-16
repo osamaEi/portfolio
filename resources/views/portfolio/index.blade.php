@@ -793,9 +793,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <span class="text-slate-500">Let's Talk</span>
         </h3>
 
-        <p class="mt-4 max-w-xl mx-auto text-slate-400">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </p>
+        
 
         <a href="tel:{{ config('portfolio.phone') }}"
            class="mt-8 inline-flex items-center gap-3 rounded-full bg-indigo-600 hover:bg-indigo-700 transition px-7 py-3.5 text-sm font-semibold text-white">
