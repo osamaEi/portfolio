@@ -8,11 +8,45 @@ if (themeToggle) {
         try { localStorage.setItem('theme', next); } catch (e) {}
     });
 }
+document.addEventListener('DOMContentLoaded', () => {
+    const nav = document.getElementById('mainNav');
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
 
-// Navbar scroll state
-const nav = document.querySelector('.nav');
-window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 20);
+    // navbar background on scroll
+    const onScroll = () => {
+        nav.classList.toggle('scrolled', window.scrollY > 30);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll);
+
+    // mobile menu toggle
+    navToggle.addEventListener('click', () => {
+        navToggle.classList.toggle('open');
+        navLinks.classList.toggle('open');
+    });
+
+    // close mobile menu on link click
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            navToggle.classList.remove('open');
+            navLinks.classList.remove('open');
+        });
+    });
+
+    // highlight active section link on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const links = document.querySelectorAll('.nav-link');
+    const spy = () => {
+        let current = '';
+        sections.forEach(sec => {
+            if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
+        });
+        links.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+        });
+    };
+    window.addEventListener('scroll', spy);
 });
 
 // Mobile menu
@@ -103,5 +137,24 @@ window.addEventListener('scroll', () => {
     });
     navAnchors.forEach(a => {
         a.style.color = a.getAttribute('href') === '#' + current ? 'var(--text)' : '';
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const bars = entry.target.querySelectorAll('.skill-bar');
+                bars.forEach(bar => {
+                    const level = bar.dataset.level;
+                    bar.style.width = level + '%';
+                });
+            }
+        });
+    }, { threshold: 0.3 });
+
+    // راقب كل skill-group
+    document.querySelectorAll('.skill-group').forEach(group => {
+        observer.observe(group);
     });
 });
