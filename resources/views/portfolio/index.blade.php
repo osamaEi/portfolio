@@ -2,20 +2,7 @@
 
 @section('content')
 {{-- ===================== HERO ===================== --}}
-<header class="relative min-h-screen flex items-center overflow-hidden bg-slate-900 text-slate-900 dark:text-white">
-
-    {{-- Background Image with Overlay --}}
-    <div class="absolute inset-0">
-        <img src="{{ asset('images/osama--bg.png') }}" 
-             alt="{{ config('portfolio.name') }}"
-             class="w-50 h-full object-cover object-[center-15%] mx-auto">
-        
-        {{-- Dark overlay --}}
-        {{-- Veil is heaviest behind the headline and clears over the portrait,
-             so the text stays readable without washing out the photo. --}}
-        <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/60 to-white/20 dark:from-[#0a0a1f]/95 dark:via-[#0a0a1f]/75 dark:to-[#0a0a1f]/85"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-white/70 via-transparent to-white/25 dark:from-[#0a0a1f]/95 dark:via-transparent dark:to-[#0a0a1f]/30"></div>
-    </div>
+<header class="relative min-h-screen flex items-center overflow-hidden bg-white dark:bg-[#0a0a1f] text-slate-900 dark:text-white">
 
     {{-- Nebula glow effects --}}
     <div class="absolute inset-0 bg-[radial-gradient(at_center,#93c5fd_0%,transparent_20%)] dark:bg-[radial-gradient(at_center,#1e3a8a_0%,transparent_70%)] opacity-20 dark:opacity-40"></div>
@@ -57,8 +44,7 @@
             </div>
 
             {{-- Right Side: About Me & My Work --}}
-            {{-- Frosted panel keeps this text legible now that the veil clears over the photo. --}}
-            <div class="lg:col-span-6 space-y-10 lg:pl-12 rounded-3xl bg-white/55 dark:bg-transparent backdrop-blur-[2px] p-6 lg:p-8">
+            <div class="lg:col-span-6 space-y-10 lg:pl-12">
 
                 <div>
                     <h3 class="uppercase text-sm tracking-[2px] text-slate-500 dark:text-gray-400 mb-3">ABOUT ME</h3>
@@ -118,7 +104,9 @@
                         <img
                             src="{{ asset('images/osama.jpg') }}"
                             alt="{{ config('portfolio.name') }}"
-                            class="relative z-10 w-full aspect-square object-contain drop-shadow-[0_25px_35px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_25px_35px_rgba(0,0,0,0.5)] transition-transform duration-1000 hover:scale-[1.03]"
+            {{-- object-cover + a rounded frame: object-contain letterboxed this
+                 landscape photo inside the square box. --}}
+                            class="relative z-10 w-full aspect-square object-cover object-top rounded-3xl border border-slate-200 dark:border-white/10 shadow-xl drop-shadow-[0_25px_35px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_25px_35px_rgba(0,0,0,0.5)] transition-transform duration-1000 hover:scale-[1.03]"
                             onerror="this.style.display='none'">
 
                         {{-- Trial-balance styled stat card, floating off the photo --}}
