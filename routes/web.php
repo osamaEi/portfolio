@@ -36,6 +36,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::resource('projects', AdminProjectController::class)->except('show');
+        Route::delete('projects/{project}/images/{image}', [AdminProjectController::class, 'destroyImage'])
+            ->name('projects.images.destroy');
         Route::resource('skills', SkillController::class)->except('show');
         Route::resource('experiences', ExperienceController::class)->except('show');
         Route::resource('testimonials', TestimonialController::class)->except('show');

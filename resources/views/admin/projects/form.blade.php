@@ -24,6 +24,30 @@
         </div>
 
         <div class="field">
+            <label>Gallery images</label>
+
+            @if($project->exists && $project->images->isNotEmpty())
+                <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;">
+                    @foreach($project->images as $image)
+                        <div style="position:relative;width:150px;">
+                            <img src="{{ $image->image_url }}" alt=""
+                                 style="width:150px;height:100px;object-fit:cover;border-radius:10px;border:1px solid var(--border);display:block;">
+                            <button type="button" class="btn remove-image"
+                                    data-action="{{ route('admin.projects.images.destroy', [$project, $image]) }}"
+                                    style="position:absolute;top:6px;right:6px;padding:2px 8px;line-height:1.4;">✕</button>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+
+            <input type="file" name="gallery[]" accept="image/*" multiple id="galleryInput">
+            <div id="galleryPreview" style="display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;"></div>
+            <div class="hint">Select multiple files to add more screenshots. Up to 12 at a time, 4 MB each.</div>
+            @error('gallery') <div class="error">{{ $message }}</div> @enderror
+            @error('gallery.*') <div class="error">{{ $message }}</div> @enderror
+        </div>
+
+        <div class="field">
             <label>Title</label>
             <input type="text" name="title" value="{{ old('title', $project->title) }}" required>
             @error('title') <div class="error">{{ $message }}</div> @enderror
@@ -78,6 +102,33 @@
 </div>
 
 <script>
+    const gallery = document.getElementById('galleryInput');
+    const galleryPreview = document.getElementById('galleryPreview');
+    if (gallery) {
+        gallery.addEventListener('change', () => {
+            galleryPreview.innerHTML = '';
+            Array.from(gallery.files).forEach(file => {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.style.cssText = 'width:150px;height:100px;object-fit:cover;border-radius:10px;border:1px solid var(--border);';
+                galleryPreview.appendChild(img);
+            });
+        });
+    }
+
+    // Submitted from outside the main form: nested <form> elements are invalid HTML.
+    document.querySelectorAll('.remove-image').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (!confirm('Remove this image?')) return;
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = btn.dataset.action;
+            form.innerHTML = '@csrf' + '<input type="hidden" name="_method" value="DELETE">';
+            document.body.appendChild(form);
+            form.submit();
+        });
+    });
+
     const input = document.getElementById('imageInput');
     const preview = document.getElementById('imagePreview');
     if (input) {

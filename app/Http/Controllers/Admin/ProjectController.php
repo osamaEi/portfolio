@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\ProjectImage;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
@@ -24,7 +27,9 @@ class ProjectController extends Controller
         $data = $this->validated($request);
         $data['image'] = $this->handleImage($request) ?? null;
 
-        Project::create($data);
+        $project = Project::create($data);
+        $this->storeGalleryImages($request, $project);
+
         return redirect()->route('admin.projects.index')->with('success', 'Project created.');
     }
 
@@ -43,14 +48,54 @@ class ProjectController extends Controller
         }
 
         $project->update($data);
+        $this->storeGalleryImages($request, $project);
+
         return redirect()->route('admin.projects.index')->with('success', 'Project updated.');
     }
 
     public function destroy(Project $project)
     {
         $this->deleteImage($project->image);
+
+        // Files aren't removed by the cascading FK, so clean them up first.
+        foreach ($project->images as $image) {
+            $this->deleteImage($image->image);
+        }
+
         $project->delete();
         return back()->with('success', 'Project deleted.');
+    }
+
+    /**
+     * Remove a single gallery image and its file.
+     */
+    public function destroyImage(Project $project, ProjectImage $image)
+    {
+        abort_unless($image->project_id === $project->id, 404);
+
+        $this->deleteImage($image->image);
+        $image->delete();
+
+        return back()->with('success', 'Image removed.');
+    }
+
+    /**
+     * Persist any uploaded gallery images, appending after existing ones.
+     */
+    private function storeGalleryImages(Request $request, Project $project): void
+    {
+        if (! $request->hasFile('gallery')) {
+            return;
+        }
+
+        $sort = (int) $project->images()->max('sort_order');
+
+        foreach ($request->file('gallery') as $file) {
+            $project->images()->create([
+                'image' => $this->moveUpload($file),
+                'sort_order' => ++$sort,
+            ]);
+        }
     }
 
     /**
@@ -62,9 +107,16 @@ class ProjectController extends Controller
             return null;
         }
 
-        $file = $request->file('image');
-        $name = \Illuminate\Support\Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
-            . '-' . \Illuminate\Support\Str::random(6) . '.' . $file->getClientOriginalExtension();
+        return $this->moveUpload($request->file('image'));
+    }
+
+    /**
+     * Move an upload into public/projects under a unique name and return it.
+     */
+    private function moveUpload(UploadedFile $file): string
+    {
+        $name = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
+            . '-' . Str::random(6) . '.' . $file->getClientOriginalExtension();
 
         $file->move(public_path('projects'), $name);
 
@@ -94,12 +146,14 @@ class ProjectController extends Controller
             'tech_stack' => ['nullable', 'string'],
             'url' => ['nullable', 'url', 'max:255'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:4096'],
+            'gallery' => ['nullable', 'array', 'max:12'],
+            'gallery.*' => ['image', 'mimes:jpg,jpeg,png,webp,gif', 'max:4096'],
             'featured' => ['nullable', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
         ]);
 
-        // The uploaded file is handled separately; don't persist it as a string.
-        unset($data['image']);
+        // Uploaded files are handled separately; don't persist them as columns.
+        unset($data['image'], $data['gallery']);
 
         $data['featured'] = $request->boolean('featured');
         $data['sort_order'] = $data['sort_order'] ?? 0;

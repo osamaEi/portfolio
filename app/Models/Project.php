@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class Project extends Model
@@ -24,6 +25,24 @@ class Project extends Model
                 $project->slug = Str::slug($project->title) . '-' . Str::random(5);
             }
         });
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(ProjectImage::class)->orderBy('sort_order')->orderBy('id');
+    }
+
+    /**
+     * Cover image plus gallery images, de-duplicated, for the public lightbox.
+     */
+    public function getGalleryAttribute(): array
+    {
+        return collect([$this->image_url])
+            ->concat($this->images->pluck('image_url'))
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
     }
 
     public function scopeOrdered($query)

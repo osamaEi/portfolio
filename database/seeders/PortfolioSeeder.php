@@ -30,21 +30,11 @@ class PortfolioSeeder extends Seeder
                 'description' => "A full-featured Learning Management System for a Saudi-accredited training institute with over 30 years of history and 25,000+ graduates. Includes diploma programs, course management, student & teacher portals, subscription billing, attendance tracking, digital certification, and a companion mobile app — aligned with Saudi Vision 2030.",
                 'tech_stack' => ['Laravel', 'Vue.js', 'MySQL', 'REST API', 'Sanctum'],
                 'url' => 'https://alertiqa.edu.sa',
-                'image' => 'Screenshot-2026-03-25-160831.png',
+                'image' => 'Screenshot-2026-06-01-140309.png',
                 'featured' => true,
                 'sort_order' => 1,
             ],
-            [
-                'title' => 'Medad Institute — Quran & Arabic Learning',
-                'category' => 'EdTech / Subscriptions',
-                'summary' => 'UK-registered non-profit online Quran & Arabic learning platform for global learners.',
-                'description' => "A multi-role online learning platform (student / teacher / admin portals) for a UK-registered non-profit. Features flexible subscription plans, session scheduling, tutor profiles, and full course management — serving global learners across all ages and levels.",
-                'tech_stack' => ['Laravel', 'Vue.js', 'MySQL', 'Redis', 'Queues'],
-                'url' => 'https://medadinstitute.com',
-                'image' => 'Screenshot-2026-06-01-140309.png',
-                'featured' => true,
-                'sort_order' => 2,
-            ],
+        
             [
                 'title' => 'Barea Educational Platform',
                 'category' => 'LMS / EdTech',
