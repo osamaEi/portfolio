@@ -11,8 +11,10 @@
              class="w-50 h-full object-cover object-[center-15%] mx-auto">
         
         {{-- Dark overlay --}}
-        <div class="absolute inset-0 bg-gradient-to-r from-white/85 via-white/75 to-white/65 dark:from-[#0a0a1f]/95 dark:via-[#0a0a1f]/75 dark:to-[#0a0a1f]/85"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-white/85 via-transparent to-white/60 dark:from-[#0a0a1f]/95 dark:via-transparent dark:to-[#0a0a1f]/30"></div>
+        {{-- Veil is heaviest behind the headline and clears over the portrait,
+             so the text stays readable without washing out the photo. --}}
+        <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/60 to-white/20 dark:from-[#0a0a1f]/95 dark:via-[#0a0a1f]/75 dark:to-[#0a0a1f]/85"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-white/70 via-transparent to-white/25 dark:from-[#0a0a1f]/95 dark:via-transparent dark:to-[#0a0a1f]/30"></div>
     </div>
 
     {{-- Nebula glow effects --}}
