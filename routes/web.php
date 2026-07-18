@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ExperienceController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SkillController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\ContactController;
@@ -43,6 +44,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('skills', SkillController::class)->except('show');
         Route::resource('experiences', ExperienceController::class)->except('show');
         Route::resource('testimonials', TestimonialController::class)->except('show');
+
+        Route::get('settings', [SettingController::class, 'edit'])->name('settings.edit');
+        Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
 
         Route::get('messages', [MessageController::class, 'index'])->name('messages.index');
         Route::get('messages/{message}', [MessageController::class, 'show'])->name('messages.show');

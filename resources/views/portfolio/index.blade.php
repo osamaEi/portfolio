@@ -679,13 +679,20 @@ document.addEventListener('DOMContentLoaded', () => {
                                 class="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white">
                             @error('email') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                         </div>
-                    </div>
 
-                    <div>
-                        <label for="subject" class="block text-sm font-semibold text-slate-900 mb-2">Subject</label>
-                        <input type="text" id="subject" name="subject" value="{{ old('subject') }}" placeholder="Subject"
-                            class="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white">
-                        @error('subject') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                        <div>
+                            <label for="phone" class="block text-sm font-semibold text-slate-900 mb-2">Phone <span class="font-normal text-slate-400">(optional)</span></label>
+                            <input type="tel" id="phone" name="phone" value="{{ old('phone') }}" placeholder="Your Phone"
+                                class="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white">
+                            @error('phone') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label for="subject" class="block text-sm font-semibold text-slate-900 mb-2">Subject</label>
+                            <input type="text" id="subject" name="subject" value="{{ old('subject') }}" placeholder="Subject"
+                                class="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white">
+                            @error('subject') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                        </div>
                     </div>
 
                     <div>
@@ -722,7 +729,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-indigo-600 text-lg">📍</span>
                         <div>
                             <p class="font-semibold text-slate-900">Office</p>
-                            <p class="text-sm text-slate-500">{{ config('portfolio.location') }}</p>
+                            <p class="text-sm text-slate-500">{{ $settings['contact_office'] }}</p>
                         </div>
                     </div>
 
@@ -730,7 +737,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-orange-100 text-orange-500 text-lg">📱</span>
                         <div>
                             <p class="font-semibold text-slate-900">Phone</p>
-                            <p class="text-sm text-slate-500">{{ config('portfolio.phone') }}</p>
+                            <p class="text-sm text-slate-500">{{ $settings['contact_phone'] }}</p>
                         </div>
                     </div>
 
@@ -738,7 +745,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-purple-100 text-purple-600 text-lg">🕐</span>
                         <div>
                             <p class="font-semibold text-slate-900">Work Hours</p>
-                            <p class="text-sm text-slate-500">Everyday 09 am - 07 pm</p>
+                            <p class="text-sm text-slate-500">{{ $settings['contact_hours'] }}</p>
                         </div>
                     </div>
 
@@ -746,7 +753,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600 text-lg">✉️</span>
                         <div>
                             <p class="font-semibold text-slate-900">Email</p>
-                            <p class="text-sm text-slate-500">{{ config('portfolio.email') }}</p>
+                            <p class="text-sm text-slate-500">{{ $settings['contact_email'] }}</p>
                         </div>
                     </div>
                 </div>
@@ -782,9 +789,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         
 
-        <a href="tel:{{ config('portfolio.phone') }}"
+        <a href="tel:{{ preg_replace('/[^\d+]/', '', $settings['contact_phone']) }}"
            class="mt-8 inline-flex items-center gap-3 rounded-full bg-indigo-600 hover:bg-indigo-700 transition px-7 py-3.5 text-sm font-semibold text-white">
-            {{ config('portfolio.phone') }}
+            {{ $settings['contact_phone'] }}
             <span class="flex h-6 w-6 items-center justify-center rounded-full bg-white/20">📞</span>
         </a>
     </div>

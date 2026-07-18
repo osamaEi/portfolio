@@ -19,6 +19,7 @@
         <a href="{{ route('admin.experiences.index') }}" class="nav-item {{ str_starts_with($r, 'admin.experiences') ? 'active' : '' }}"><span class="ic">◷</span> Experience</a>
         <a href="{{ route('admin.testimonials.index') }}" class="nav-item {{ str_starts_with($r, 'admin.testimonials') ? 'active' : '' }}"><span class="ic">★</span> Testimonials</a>
         <a href="{{ route('admin.messages.index') }}" class="nav-item {{ str_starts_with($r, 'admin.messages') ? 'active' : '' }}"><span class="ic">✉</span> Messages</a>
+        <a href="{{ route('admin.settings.edit') }}" class="nav-item {{ str_starts_with($r, 'admin.settings') ? 'active' : '' }}"><span class="ic">⚙</span> Contact details</a>
         <a href="{{ route('home') }}" target="_blank" class="nav-item"><span class="ic">↗</span> View site</a>
         <form method="POST" action="{{ route('admin.logout') }}">
             @csrf

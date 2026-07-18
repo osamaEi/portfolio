@@ -11,6 +11,13 @@
     <table style="margin-bottom:20px;">
         <tr><th style="width:120px;">From</th><td>{{ $message->name }}</td></tr>
         <tr><th>Email</th><td><a href="mailto:{{ $message->email }}" style="color:var(--brand);">{{ $message->email }}</a></td></tr>
+        <tr><th>Phone</th><td>
+            @if($message->phone)
+                <a href="tel:{{ preg_replace('/[^\d+]/', '', $message->phone) }}" style="color:var(--brand);">{{ $message->phone }}</a>
+            @else
+                <span class="muted">—</span>
+            @endif
+        </td></tr>
         <tr><th>Subject</th><td>{{ $message->subject ?: '—' }}</td></tr>
         <tr><th>Received</th><td class="muted">{{ $message->created_at->format('M j, Y · g:i A') }}</td></tr>
     </table>

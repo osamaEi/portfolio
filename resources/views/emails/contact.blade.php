@@ -4,6 +4,9 @@
 You received a new message through your portfolio site.
 
 **From:** {{ $contactMessage->name }} ({{ $contactMessage->email }})
+@if($contactMessage->phone)
+**Phone:** {{ $contactMessage->phone }}
+@endif
 **Subject:** {{ $contactMessage->subject ?: '—' }}
 
 ---
