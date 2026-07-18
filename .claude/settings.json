@@ -4,7 +4,10 @@
       "Bash(curl -s http://127.0.0.1:8000/)",
       "Bash(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8000/)",
       "Bash(echo \"home:$\\(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8000/\\)\")",
-      "Bash(php -r ' *)"
+      "Bash(php -r ' *)",
+      "Bash(curl -s http://127.0.0.1:8000/admin/settings)",
+      "Bash(php -r 'require \"vendor/autoload.php\"; $a=require \"bootstrap/app.php\"; $a->make\\(Illuminate\\\\Contracts\\\\Console\\\\Kernel::class\\)->bootstrap\\(\\); echo App\\\\Models\\\\ContactMessage::latest\\(\\)->first\\(\\)->id;')",
+      "Bash(curl -s -b /tmp/adm.txt http://127.0.0.1:8000/admin/messages/__TRACKED_VAR__)"
     ]
   }
 }

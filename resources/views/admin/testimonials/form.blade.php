@@ -37,6 +37,13 @@
         </div>
 
         <div class="field">
+            <label>Link to review</label>
+            <input type="url" name="url" value="{{ old('url', $testimonial->url) }}" placeholder="https://mostaql.com/portfolio/...">
+            <div class="hint">Optional. If set, the testimonial card links to the original review.</div>
+            @error('url') <div class="error">{{ $message }}</div> @enderror
+        </div>
+
+        <div class="field">
             <label>Review text</label>
             <textarea name="body" required>{{ old('body', $testimonial->body) }}</textarea>
             @error('body') <div class="error">{{ $message }}</div> @enderror

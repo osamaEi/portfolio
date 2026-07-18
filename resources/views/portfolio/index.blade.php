@@ -557,6 +557,15 @@ document.addEventListener('DOMContentLoaded', () => {
                                         {{ $t->project }} · {{ $t->source }}
                                     </span>
                                 </div>
+
+                                @if($t->url)
+                                    {{-- A link rather than a card-wide anchor: the carousel drags,
+                                         and a full-card <a> would fire on every drag release. --}}
+                                    <a href="{{ $t->url }}" target="_blank" rel="noopener"
+                                       class="ml-auto shrink-0 text-xs font-semibold text-cyan-600 dark:text-cyan-400 hover:underline whitespace-nowrap">
+                                        View review ↗
+                                    </a>
+                                @endif
                             </figcaption>
                         </figure>
                     @endforeach

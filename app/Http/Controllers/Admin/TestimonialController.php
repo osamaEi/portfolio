@@ -50,6 +50,7 @@ class TestimonialController extends Controller
             'rating' => ['required', 'integer', 'min:1', 'max:5'],
             'body' => ['required', 'string'],
             'source' => ['nullable', 'string', 'max:80'],
+            'url' => ['nullable', 'url', 'max:255'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
         ]);
 
