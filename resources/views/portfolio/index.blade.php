@@ -57,7 +57,8 @@
             </div>
 
             {{-- Right Side: About Me & My Work --}}
-            <div class="lg:col-span-6 space-y-10 lg:pl-12">
+            {{-- Frosted panel keeps this text legible now that the veil clears over the photo. --}}
+            <div class="lg:col-span-6 space-y-10 lg:pl-12 rounded-3xl bg-white/55 dark:bg-transparent backdrop-blur-[2px] p-6 lg:p-8">
 
                 <div>
                     <h3 class="uppercase text-sm tracking-[2px] text-slate-500 dark:text-gray-400 mb-3">ABOUT ME</h3>
