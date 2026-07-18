@@ -32,6 +32,11 @@ class Project extends Model
         return $this->hasMany(ProjectImage::class)->orderBy('sort_order')->orderBy('id');
     }
 
+    public function videos(): HasMany
+    {
+        return $this->hasMany(ProjectVideo::class)->orderBy('sort_order')->orderBy('id');
+    }
+
     /**
      * Cover image plus gallery images, de-duplicated, for the public lightbox.
      */

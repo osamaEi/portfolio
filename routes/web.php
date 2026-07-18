@@ -38,6 +38,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('projects', AdminProjectController::class)->except('show');
         Route::delete('projects/{project}/images/{image}', [AdminProjectController::class, 'destroyImage'])
             ->name('projects.images.destroy');
+        Route::delete('projects/{project}/videos/{video}', [AdminProjectController::class, 'destroyVideo'])
+            ->name('projects.videos.destroy');
         Route::resource('skills', SkillController::class)->except('show');
         Route::resource('experiences', ExperienceController::class)->except('show');
         Route::resource('testimonials', TestimonialController::class)->except('show');

@@ -37,6 +37,26 @@
             @endif
         @endif
 
+        @if($project->videos->isNotEmpty())
+            <div class="reveal" style="display:grid;gap:20px;margin-bottom:40px;">
+                @foreach($project->videos as $video)
+                    @if($video->is_embed)
+                        @if($video->embed_url)
+                            <div style="position:relative;padding-top:56.25%;border-radius:16px;overflow:hidden;border:1px solid var(--border);">
+                                <iframe src="{{ $video->embed_url }}" title="{{ $video->title ?: $project->title }}"
+                                        loading="lazy" allowfullscreen
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+                                        style="position:absolute;inset:0;width:100%;height:100%;border:0;"></iframe>
+                            </div>
+                        @endif
+                    @else
+                        <video src="{{ $video->video_url }}" controls preload="metadata" playsinline
+                               style="width:100%;border-radius:16px;border:1px solid var(--border);box-shadow:var(--shadow);background:#000;"></video>
+                    @endif
+                @endforeach
+            </div>
+        @endif
+
         @if($project->tech_stack)
             <div class="tags reveal" style="margin-bottom:34px;">
                 @foreach($project->tech_stack as $tech)

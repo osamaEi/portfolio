@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\ProjectImage;
+use App\Models\ProjectVideo;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
@@ -29,6 +30,7 @@ class ProjectController extends Controller
 
         $project = Project::create($data);
         $this->storeGalleryImages($request, $project);
+        $this->storeVideos($request, $project);
 
         return redirect()->route('admin.projects.index')->with('success', 'Project created.');
     }
@@ -49,6 +51,7 @@ class ProjectController extends Controller
 
         $project->update($data);
         $this->storeGalleryImages($request, $project);
+        $this->storeVideos($request, $project);
 
         return redirect()->route('admin.projects.index')->with('success', 'Project updated.');
     }
@@ -60,6 +63,10 @@ class ProjectController extends Controller
         // Files aren't removed by the cascading FK, so clean them up first.
         foreach ($project->images as $image) {
             $this->deleteImage($image->image);
+        }
+
+        foreach ($project->videos as $video) {
+            $this->deleteImage($video->video);
         }
 
         $project->delete();
@@ -77,6 +84,46 @@ class ProjectController extends Controller
         $image->delete();
 
         return back()->with('success', 'Image removed.');
+    }
+
+    /**
+     * Remove a single video and its file (external links have no file).
+     */
+    public function destroyVideo(Project $project, ProjectVideo $video)
+    {
+        abort_unless($video->project_id === $project->id, 404);
+
+        $this->deleteImage($video->video);
+        $video->delete();
+
+        return back()->with('success', 'Video removed.');
+    }
+
+    /**
+     * Persist uploaded video files and any pasted YouTube/Vimeo links.
+     */
+    private function storeVideos(Request $request, Project $project): void
+    {
+        $sort = (int) $project->videos()->max('sort_order');
+
+        foreach ((array) $request->file('videos') as $file) {
+            $project->videos()->create([
+                'video' => $this->moveUpload($file),
+                'sort_order' => ++$sort,
+            ]);
+        }
+
+        // One URL per line, so several embeds can be added in a single save.
+        $urls = collect(preg_split('/\r\n|\r|\n/', (string) $request->input('video_urls')))
+            ->map(fn ($u) => trim($u))
+            ->filter();
+
+        foreach ($urls as $url) {
+            $project->videos()->create([
+                'video' => $url,
+                'sort_order' => ++$sort,
+            ]);
+        }
     }
 
     /**
@@ -148,12 +195,15 @@ class ProjectController extends Controller
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:4096'],
             'gallery' => ['nullable', 'array', 'max:12'],
             'gallery.*' => ['image', 'mimes:jpg,jpeg,png,webp,gif', 'max:4096'],
+            'videos' => ['nullable', 'array', 'max:6'],
+            'videos.*' => ['file', 'mimetypes:video/mp4,video/webm,video/quicktime', 'max:32768'],
+            'video_urls' => ['nullable', 'string'],
             'featured' => ['nullable', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
         ]);
 
         // Uploaded files are handled separately; don't persist them as columns.
-        unset($data['image'], $data['gallery']);
+        unset($data['image'], $data['gallery'], $data['videos'], $data['video_urls']);
 
         $data['featured'] = $request->boolean('featured');
         $data['sort_order'] = $data['sort_order'] ?? 0;

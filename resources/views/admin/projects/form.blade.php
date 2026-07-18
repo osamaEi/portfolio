@@ -32,7 +32,7 @@
                         <div style="position:relative;width:150px;">
                             <img src="{{ $image->image_url }}" alt=""
                                  style="width:150px;height:100px;object-fit:cover;border-radius:10px;border:1px solid var(--border);display:block;">
-                            <button type="button" class="btn remove-image"
+                            <button type="button" class="btn remove-media"
                                     data-action="{{ route('admin.projects.images.destroy', [$project, $image]) }}"
                                     style="position:absolute;top:6px;right:6px;padding:2px 8px;line-height:1.4;">✕</button>
                         </div>
@@ -45,6 +45,40 @@
             <div class="hint">Select multiple files to add more screenshots. Up to 12 at a time, 4 MB each.</div>
             @error('gallery') <div class="error">{{ $message }}</div> @enderror
             @error('gallery.*') <div class="error">{{ $message }}</div> @enderror
+        </div>
+
+        <div class="field">
+            <label>Videos</label>
+
+            @if($project->exists && $project->videos->isNotEmpty())
+                <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;">
+                    @foreach($project->videos as $video)
+                        <div style="position:relative;width:230px;">
+                            @if($video->is_embed)
+                                <div style="height:130px;border-radius:10px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-size:.8rem;word-break:break-all;">
+                                    {{ $video->embed_url ? '▶ Embedded video' : '⚠ Unrecognised link' }}<br>
+                                    <span style="opacity:.6;">{{ Str::limit($video->video, 40) }}</span>
+                                </div>
+                            @else
+                                <video src="{{ $video->video_url }}" controls preload="metadata"
+                                       style="width:230px;height:130px;object-fit:cover;border-radius:10px;border:1px solid var(--border);display:block;background:#000;"></video>
+                            @endif
+                            <button type="button" class="btn remove-media"
+                                    data-action="{{ route('admin.projects.videos.destroy', [$project, $video]) }}"
+                                    style="position:absolute;top:6px;right:6px;padding:2px 8px;line-height:1.4;">✕</button>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+
+            <input type="file" name="videos[]" accept="video/mp4,video/webm,video/quicktime" multiple>
+            <div class="hint">MP4/WebM/MOV, up to 32 MB each (server limit is 40 MB per request).</div>
+            @error('videos') <div class="error">{{ $message }}</div> @enderror
+            @error('videos.*') <div class="error">{{ $message }}</div> @enderror
+
+            <textarea name="video_urls" rows="2" placeholder="https://youtu.be/... (one per line)" style="margin-top:10px;">{{ old('video_urls') }}</textarea>
+            <div class="hint">Or paste YouTube/Vimeo links, one per line — no upload size limit.</div>
+            @error('video_urls') <div class="error">{{ $message }}</div> @enderror
         </div>
 
         <div class="field">
@@ -117,9 +151,9 @@
     }
 
     // Submitted from outside the main form: nested <form> elements are invalid HTML.
-    document.querySelectorAll('.remove-image').forEach(btn => {
+    document.querySelectorAll('.remove-media').forEach(btn => {
         btn.addEventListener('click', () => {
-            if (!confirm('Remove this image?')) return;
+            if (!confirm('Remove this item?')) return;
             const form = document.createElement('form');
             form.method = 'POST';
             form.action = btn.dataset.action;
